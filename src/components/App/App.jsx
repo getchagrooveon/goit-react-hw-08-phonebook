@@ -1,28 +1,52 @@
 import ContactsList from 'components/ContactsList/ContactsList';
-import { ContactForm } from 'components/ContactForm/ContactForm';
-import { Filter } from 'components/Filter/Filter';
-import { getIsLoading, getError } from 'redux/selectors';
+import { getIsLoading, getError, getAuthStatus } from 'redux/selectors';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchContacts } from 'redux/operations';
+import { fetchContacts, refreshUser } from 'redux/operations';
+import Registration from 'components/Registration/Registration';
+import Login from 'components/Login/Login';
+import { UserMenu } from 'components/UserMenu/UserMenu';
+import { Navigate, Routes, Route, Link } from 'react-router-dom';
 
 export const App = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(getIsLoading);
   const error = useSelector(getError);
+  const status = useSelector(getAuthStatus);
 
   useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+    if (status === 'Success') {
+      dispatch(refreshUser());
+      dispatch(fetchContacts());
+    }
+  }, [status, dispatch]);
 
   return (
-    <div>
+    <>
       <h1>Phonebook</h1>
-      <ContactForm />
-      <h2>Contacts</h2>
-      <Filter />
-      {isLoading && !error && <b>Loading...</b>}
-      <ContactsList />
-    </div>
+      <nav>
+        {status === 'Success' ? (
+          <>
+            <UserMenu />
+            <Link to={'/contacts'}> contacts</Link>
+          </>
+        ) : (
+          <>
+            <Link to={'/register'}> register</Link>
+            <Link to={'/login'}> login</Link>
+          </>
+        )}
+      </nav>
+      <div>
+        <Routes>
+          <Route path="/" element={<Navigate to={'/contacts'} />} />
+          <Route path="/register" element={<Registration />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/contacts" element={<ContactsList />} />
+        </Routes>
+
+        {isLoading && !error && status && <b>Loading...</b>}
+      </div>
+    </>
   );
 };

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from 'redux/operations';
+import { getContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
-  const [contact, setContact] = useState({ name: '', phone: '' });
+  const [contact, setContact] = useState({ name: '', number: '' });
+  const contactList = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const handleChange = event => {
@@ -17,11 +18,14 @@ export const ContactForm = () => {
   const handleSubmitaddContact = event => {
     event.preventDefault();
     const newContact = contact;
-    contact.id = nanoid();
+    if (contactList.find(contact => contact.name === newContact.name)) {
+      alert('This contact has already been added');
+      return;
+    }
     dispatch(addContacts(newContact));
     setContact({
       name: '',
-      phone: '',
+      number: '',
     });
   };
 
@@ -32,7 +36,7 @@ export const ContactForm = () => {
         <input
           type="text"
           name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
           placeholder="Name"
@@ -44,12 +48,12 @@ export const ContactForm = () => {
         Phone number
         <input
           type="tel"
-          name="phone"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          name="number"
+          // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           placeholder="Phone number"
           required
-          value={contact.phone}
+          value={contact.number}
           onChange={handleChange}
         />
       </label>
