@@ -6,6 +6,7 @@ import './index.css';
 import { persistor, store } from 'redux/store.js';
 import { BrowserRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
+import '@fontsource/roboto/400.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

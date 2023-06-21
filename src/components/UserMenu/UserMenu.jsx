@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from 'redux/operations';
 import { getUserInfo } from 'redux/selectors';
+import Button from '@mui/material/Button';
 
 export const UserMenu = () => {
   const dispatch = useDispatch();
@@ -13,8 +14,10 @@ export const UserMenu = () => {
 
   return (
     <div>
-      <p>{userinfo.email}</p>
-      <button onClick={handleLogOut}>Log out</button>
+      <p className="userinfo">{userinfo.email}</p>
+      <Button variant="contained" onClick={handleLogOut}>
+        Log out
+      </Button>
     </div>
   );
 };

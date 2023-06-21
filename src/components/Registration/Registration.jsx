@@ -2,6 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createUser } from 'redux/operations';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 const Registration = () => {
   const [user, setUser] = useState({ name: '', email: '', password: '' });
@@ -11,7 +13,6 @@ const Registration = () => {
     event.preventDefault();
     try {
       await dispatch(createUser(user)).unwrap();
-      // navigate(/ContactsList, {replace: true})
       setUser({
         name: '',
         email: '',
@@ -28,40 +29,42 @@ const Registration = () => {
     }));
   };
   return (
-    <div>
-      <h1>Registration Page</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="container">
+      <form className="form" onSubmit={handleSubmit}>
         <label thmlfor="name"></label>
-        <input
+        <TextField
           onChange={handleChange}
           name="name"
           type="text"
-          id="name"
+          id="outlined-controlled"
           value={user.name}
-          placeholder="Name"
+          label="Name"
           required
-        ></input>
+          autoFocus={true}
+        ></TextField>
         <label thmlfor="email"></label>
-        <input
+        <TextField
           onChange={handleChange}
           name="email"
           type="text"
-          id="email"
+          id="outlined-controlled"
           value={user.email}
-          placeholder="Email"
+          label="E-mail"
           required
-        ></input>
+        ></TextField>
         <label thmlfor="password"></label>
-        <input
+        <TextField
           onChange={handleChange}
           name="password"
           type="password"
-          id="password"
+          id="outlined-controlled"
           value={user.password}
-          placeholder="Password (min. 7 symbols)"
+          label="Password (min. 7 symbols)"
           required
-        ></input>
-        <button type="submit">Register</button>
+        ></TextField>
+        <Button variant="contained" type="submit">
+          Register
+        </Button>
       </form>
     </div>
   );

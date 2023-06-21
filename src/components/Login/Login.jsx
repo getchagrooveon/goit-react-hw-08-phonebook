@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { logInUser } from 'redux/operations';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 const Login = () => {
   const [user, setUser] = useState({ email: '', password: '' });
@@ -27,30 +29,32 @@ const Login = () => {
     }));
   };
   return (
-    <div>
-      <h1>Login Page</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="container">
+      <form className="form" onSubmit={handleSubmit}>
         <label thmlfor="email"></label>
-        <input
+        <TextField
           onChange={handleChange}
           name="email"
           type="text"
-          id="email"
+          id="outlined-controlled"
           value={user.email}
-          placeholder="Email"
+          label="E-mail"
+          autoFocus={true}
           required
-        ></input>
+        ></TextField>
         <label thmlfor="password"></label>
-        <input
+        <TextField
           onChange={handleChange}
           name="password"
           type="text"
-          id="password"
+          id="outlined-controlled"
           value={user.password}
-          placeholder="Password (min. 7 symbols)"
+          label="Password"
           required
-        ></input>
-        <button type="submit">Log in</button>
+        ></TextField>
+        <Button type="submit" variant="contained">
+          Log in
+        </Button>
       </form>
     </div>
   );

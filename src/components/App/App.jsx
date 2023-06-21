@@ -1,17 +1,17 @@
 import ContactsList from 'components/ContactsList/ContactsList';
-import { getIsLoading, getError, getAuthStatus } from 'redux/selectors';
+import { getAuthStatus } from 'redux/selectors';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts, refreshUser } from 'redux/operations';
 import Registration from 'components/Registration/Registration';
 import Login from 'components/Login/Login';
 import { UserMenu } from 'components/UserMenu/UserMenu';
-import { Navigate, Routes, Route, Link } from 'react-router-dom';
+import { Navigate, Routes, Route, Link, NavLink } from 'react-router-dom';
+import PublicRoutes from 'components/PublicRoutes/PublicRoutes';
+import PrivateRoutes from 'components/PrivateRoutes/PrivateRoutes';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
   const status = useSelector(getAuthStatus);
 
   useEffect(() => {
@@ -28,24 +28,30 @@ export const App = () => {
         {status === 'Success' ? (
           <>
             <UserMenu />
-            <Link to={'/contacts'}> contacts</Link>
           </>
         ) : (
           <>
-            <Link to={'/register'}> register</Link>
-            <Link to={'/login'}> login</Link>
+            <NavLink className="navlink" to={'/register'}>
+              register
+            </NavLink>
+            <NavLink className="navlink" to={'/login'}>
+              login
+            </NavLink>
           </>
         )}
       </nav>
+      {status === 'Loading' && <b>Loading...</b>}
       <div>
         <Routes>
           <Route path="/" element={<Navigate to={'/contacts'} />} />
-          <Route path="/register" element={<Registration />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/contacts" element={<ContactsList />} />
+          <Route path="/" element={<PublicRoutes />}>
+            <Route path="/register" element={<Registration />} />
+            <Route path="/login" element={<Login />} />
+          </Route>
+          <Route path="/" element={<PrivateRoutes />}>
+            <Route path="/contacts" element={<ContactsList />} />
+          </Route>
         </Routes>
-
-        {isLoading && !error && status && <b>Loading...</b>}
       </div>
     </>
   );
