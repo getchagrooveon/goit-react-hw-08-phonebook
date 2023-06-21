@@ -6,7 +6,7 @@ import { fetchContacts, refreshUser } from 'redux/operations';
 import Registration from 'components/Registration/Registration';
 import Login from 'components/Login/Login';
 import { UserMenu } from 'components/UserMenu/UserMenu';
-import { Navigate, Routes, Route, Link, NavLink } from 'react-router-dom';
+import { Navigate, Routes, Route, NavLink } from 'react-router-dom';
 import PublicRoutes from 'components/PublicRoutes/PublicRoutes';
 import PrivateRoutes from 'components/PrivateRoutes/PrivateRoutes';
 
